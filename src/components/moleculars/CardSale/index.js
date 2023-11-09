@@ -7,51 +7,31 @@ const CardSale = ({barang, price, onItemChange }) => {
   const [qty, setQty] = useState(0)
   const [total, setTotal] = useState(0);
 
+
   const incrementQty = () => {
     setQty((prevQty) => {
       const newQty = prevQty + 1;
-      const newTotal = newQty * price;
-      setTotal(newTotal);
-      onItemChange(price, newQty, newTotal); // Pass the new quantity and total to the callback
+      const priceIncrease = price; // The increase in total price is just the price of one item
+      setTotal((prevTotal) => prevTotal + priceIncrease);
+      onItemChange(price, 1); // Pass the item's price and a quantity change of 1
       return newQty;
     });
   };
+  
   
   const decrementQty = () => {
     setQty((prevQty) => {
       if (prevQty > 0) {
         const newQty = prevQty - 1;
-        const newTotal = newQty * price;
-        setTotal(newTotal);
-        onItemChange(price, newQty, newTotal); // Pass the new quantity and total to the callback
+        const priceChange = -price; // This is the negative value of the item's price
+        setTotal((prevTotal) => prevTotal + priceChange);
+        onItemChange(price, -1); // Pass the item's price and -1 to indicate decrement
         return newQty;
       }
       return prevQty;
     });
   };
-
-  // const incrementQty = () => {
-  //   setQty(prevQty => {
-  //     const newQty = prevQty + 1;
-  //     onItemChange(price, 1); // Assuming `price` is the price of one unit
-  //     const newTotal = qty * price;
-  //     setTotal(newTotal);
-  //     return newQty;
-  //   });
-  // };
   
-  // const decrementQty = () => {
-  //   setQty(prevQty => {
-  //     if (prevQty > 0) {
-  //       const newQty = prevQty - 1;
-  //       onItemChange(price, -1); // Assuming `price` is the price of one unit
-  //       const newTotal = qty * price;
-  //       setTotal(newTotal);
-  //       return newQty;
-  //     }
-  //     return prevQty;
-  //   });
-  // };
 
   return (
     <View style={styles.container}>

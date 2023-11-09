@@ -5,7 +5,7 @@ import { IconDrawer } from '../../assets'
 
 const height = Dimensions.get('screen').height;
 
-const OrderList = () => {
+const OrderList = ({navigation}) => {
   return (
     <SafeAreaView style={styles.container}>
         <StatusBar
@@ -46,7 +46,7 @@ const OrderList = () => {
                     </View>
                     <Gap height={12} />
                     <View style={{width: 80,}}>
-                      <TouchableOpacity style={styles.btn}>
+                      <TouchableOpacity style={styles.btn} onPress={() => navigation.navigate('OrderInput')}>
                             <Text style={styles.textBtn} >Add</Text>
                         </TouchableOpacity>
                     </View>

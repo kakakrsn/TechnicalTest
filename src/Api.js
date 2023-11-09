@@ -12,6 +12,16 @@ class Api {
             data,
         })
     }
+
+    static getList(token) {
+        let path = `Order/GetItems`;
+        return request(`${this.urlAPI()}${path}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+            },
+        })
+    }
 }
 
 export default Api

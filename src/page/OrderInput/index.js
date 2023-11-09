@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { CardModal, CardSale, Gap, Input } from '../../components'
 import { IconDrawer } from '../../assets'
 import Api from '../../Api';
+import { getData, storeData } from '../../utils/localStorage';
 
 const height = Dimensions.get('screen').height;
 
@@ -10,23 +11,31 @@ const OrderInput = ({navigation}) => {
     const [totalPrice, setTotalPrice] = useState(0);
     const [totalItems, setTotalItems] = useState(0);
     const [modalVisible, setModalVisible] = useState(false)
+    const [list, setList] = useState([])
 
-    const handleItemChange = (itemPrice, itemQtyChange) => {
-        // setTotalPrice(prevTotalPrice => prevTotalPrice + (itemPrice * itemQtyChange));
-        // setTotalItems(prevTotalItems => prevTotalItems + itemQtyChange);
+    const handleItemChange = (itemPrice, qtyChange) => {
+        // Convert string input to numbers to ensure arithmetic operations are done with numeric values.
         const numericPrice = Number(itemPrice);
-        const numericQtyChange = Number(itemQtyChange);
-
-        // Check if numericPrice and numericQtyChange are actual numbers
-        if (!isNaN(numericPrice) && !isNaN(numericQtyChange)) {
-            setTotalPrice((prevTotalPrice) => prevTotalPrice + (numericPrice * numericQtyChange));
-            setTotalItems((prevTotalItems) => prevTotalItems + numericQtyChange);
-        } else {
-            // Handle the case where numericPrice or numericQtyChange is not a number
-            console.error('Invalid item price or quantity change: ', itemPrice, itemQtyChange);
-        }
-    };
+        const numericQtyChange = Number(qtyChange);
       
+        // Check that the converted numbers are valid.
+        if (!isNaN(numericPrice) && !isNaN(numericQtyChange)) {
+          setTotalPrice((prevTotalPrice) => {
+            // Adjust the total price based on the quantity change.
+            return prevTotalPrice + (numericPrice * numericQtyChange);
+          });
+          setTotalItems((prevTotalItems) => {
+            // Adjust the total item count based on the quantity change.
+            const newTotalItems = prevTotalItems + numericQtyChange;
+            // Ensure the total item count does not go below zero.
+            return newTotalItems >= 0 ? newTotalItems : 0;
+          });
+        } else {
+          console.error('Invalid item price or quantity change: ', itemPrice, qtyChange);
+        }
+      };
+      
+    
 
     const onOrder = () => {
         const data = {
@@ -34,30 +43,8 @@ const OrderInput = ({navigation}) => {
             totalPrice: totalPrice
         }
         console.log(data, 'cek')
+        navigation.navigate('OrderList')
     }
-
-    // const grant_type = 'client_credentials';
-    // const client_id = 'profes-api';
-    // const client_secret = 'P@ssw0rd'
-
-    // const requestToken = async () => {
-    //     try {
-    //         const data = {
-    //             grant_type : 'client_credentials',
-    //             client_id : 'profes-api',
-    //             client_secret : 'P@ssw0rd',
-    //         }
-    //         console.log(data, 'kirim')
-    //         const response = await Api.getToken(data)
-    //         console.log(response.data, 'berhasil')
-    //     } catch (error) {
-    //         console.log(error.response.data, 'gagal')
-    //     }
-    // }
-
-    // useEffect(() => {
-    //     requestToken()
-    // },[])
 
 
   return (
@@ -113,7 +100,7 @@ const OrderInput = ({navigation}) => {
                         price={1500}
                         total={totalPrice}
                         onItemChange={handleItemChange} />
-                    <CardSale />
+                    {/* <CardSale /> */}
                     <Gap height={10} /> 
                 </ScrollView>
             </View>
@@ -146,6 +133,7 @@ const OrderInput = ({navigation}) => {
         {
             modalVisible &&
             <CardModal 
+                action={() => setModalVisible(!modalVisible)}
             onItemChange={(priceChange, quantityChange) => {
                 // Define what should happen when the item changes
               }}
