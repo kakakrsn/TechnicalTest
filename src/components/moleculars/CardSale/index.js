@@ -48,7 +48,7 @@ const CardSale = ({barang, price, onItemChange }) => {
             <IconMinus width={14} height={14} />
           </TouchableOpacity>
           <Gap width={8} />
-          <Text>{qty}</Text>
+          <Text style={{color: 'black'}}>{qty}</Text>
           <Gap width={8} />
           <TouchableOpacity onPress={incrementQty}>
             <IconPlus />

@@ -7,7 +7,7 @@ const Input = ({ title, keyboardType, maxLength, secureTextEntry, underlineColor
     return (
         <View>
             {/* <Text style={styles.teks}>{title}</Text> */}
-            <TextInput style={styles.input} placeholder={placeholder} secureTextEntry={secureTextEntry} autoCapitalize={autoCapitalize} keyboardType={keyboardType} maxLength={maxLength} underlineColorAndroid={underlineColorAndroid} value={value} onChangeText={onChangeText} multiline={multiline} />
+            <TextInput style={styles.input} placeholder={placeholder} placeholderTextColor={'#ACACAC'} secureTextEntry={secureTextEntry} autoCapitalize={autoCapitalize} keyboardType={keyboardType} maxLength={maxLength} underlineColorAndroid={underlineColorAndroid} value={value} onChangeText={onChangeText} multiline={multiline} />
         </View>
     )
 }
